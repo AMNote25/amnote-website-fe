@@ -1,2 +1,1 @@
 # amnote-website-fe
-Hello
