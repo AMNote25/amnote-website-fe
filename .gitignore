@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+pnpm-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -137,3 +138,60 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Build outputs
+dist/
+build/
+out/
+
+# Development and build cache
+.cache/
+.parcel-cache/
+.vite/
+
+# IDE and Editor files
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Package manager lock files (if using different package managers)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# TypeScript incremental compilation
+tsconfig.tsbuildinfo
+
+# Test coverage
+coverage/
+.coverage/
+junit.xml
+
+# Storybook
+storybook-static/
+
+# Miscellaneous
+*.tgz
+*.tar.gz
