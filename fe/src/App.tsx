@@ -1,8 +1,10 @@
+import BaseLayout from "./layouts/BaseLayout"
+
 function App() {
 
   return (
     <>
-      <div></div>
+      <BaseLayout/>
     </>
   )
 }

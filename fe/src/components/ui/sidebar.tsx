@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva, VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
+import type { VariantProps } from "class-variance-authority"
 import { PanelLeftIcon } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -147,6 +148,25 @@ function SidebarProvider({
       </TooltipProvider>
     </SidebarContext.Provider>
   )
+}
+
+function SidebarSection({ 
+  children,
+  className, 
+  showSeparator = true,
+  ...props
+}: React.PropsWithChildren<{
+  className?: string
+  showSeparator?: boolean
+} & React.ComponentProps<"div">>) {
+  return (
+    <>
+      {showSeparator && <Separator className="w-full" />}
+      <div className={cn("w-full", className)} {...props}>
+        {children}
+      </div>
+    </>
+  );
 }
 
 function Sidebar({
