@@ -1,18 +1,21 @@
+"use client";
+import { useEffect } from "react";
 import "./globals.css";
-
-export const metadata = {
-  title: 'AMnote - Phần mềm kế toán',
-  description: 'Made by AMnote',
-}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
+  useEffect(() => {
+    document.documentElement.classList.remove("mdl-js");
+  }, []);
+
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  )
+    <>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </>
+  );
 }
