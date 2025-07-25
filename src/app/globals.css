@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
   --amnote-red: #B71D21;
   --amnote-brown: #FFE4E4;
   --amnote-blue: #667280;
   --amnote-gray: #D8D8E4;
   --radius: 0.625rem;
-  
+
   /* Easing variables for animations */
   --expo-out: cubic-bezier(0.16, 1, 0.3, 1);
   --expo-in: cubic-bezier(0.7, 0, 0.84, 0);
-  
+
   /* Light theme colors */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -20,7 +22,7 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: #B71D21;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #FFE4E4;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -30,7 +32,7 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  
+
   /* Additional semantic colors */
   --app-background: rgb(242, 243, 245);
   --header-background: var(--background);
@@ -132,7 +134,20 @@ body {
   background: rgba(0, 0, 0, 0.5);
 }
 
-/* Text color utilities using CSS variables */
+.text-am-red {
+  color: var(--amnote-red);
+}
+.text-am-brown {
+  color: var(--amnote-brown);
+}
+
+.hover.text-am-red:hover {
+  color: var(--amnote-red);
+}
+.hover.text-am-brown:hover {
+  color: var(--amnote-brown);
+}
+
 .text-primary {
   color: var(--text-primary);
 }
@@ -403,7 +418,7 @@ body {
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  
+
   /* Dark theme semantic colors */
   --app-background: oklch(0.092 0 0);
   --header-background: var(--card);

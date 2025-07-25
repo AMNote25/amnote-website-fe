@@ -1,4 +1,4 @@
-export const sidebarMenuData = [
+export const menuData = [
   {
     id: "1",
     title: "Tổng quan",
