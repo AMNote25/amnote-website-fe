@@ -8,8 +8,7 @@ export default function AdminPage() {
   return (
     <>
       <div className="flex h-screen gap-6 p-6 app-background">
-        {/* Sidebar: fixed width */}
-        <div className="shrink-0 basis-[220px]">
+        <div className="shrink-0 basis-2xs">
           <NavBar onMenuChange={setCurrentMenu} />
         </div>
       </div>

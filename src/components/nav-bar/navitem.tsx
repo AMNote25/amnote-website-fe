@@ -51,7 +51,7 @@ function MenuItemLv1({
 }: MenuItemLv1Props) {
   return (
     <div className={cn("w-full mb-3", className)} {...props}>
-      <h3 className="px-2 mb-3 text-sm font-bold tracking-wider text-gray-500">
+      <h3 className="px-2 mb-3 text-sm font-semibold tracking-wider text-gray-500">
         {label}
       </h3>
       <div className="space-y-1">{children}</div>
@@ -110,7 +110,7 @@ function MenuItemLv2({
               variant="ghost"
               className={cn(
                 "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto",
-                "text-gray-700 hover:bg-gray-100 font-normal"
+                "text-gray-700 hover:bg-gray-100 font-light",
               )}
             >
               <div className="flex items-center">
@@ -121,7 +121,7 @@ function MenuItemLv2({
                     className="mr-3 text-gray-500 transition-colors duration-200" 
                   />
                 )}
-                <span className="font-bold">{label}</span>
+                <span className="font-semibold">{label}</span>
               </div>
               <Icon 
                 name="chevron-right" 
@@ -143,9 +143,9 @@ function MenuItemLv2({
           variant="ghost"
           onClick={handleClick}
           className={cn(
-            "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto font-normal",
+            "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto font-light",
             !hasChildren && isActive 
-              ? 'bg-secondary text-primary hover:bg-secondary hover:text-primary' 
+              ? 'bg-am-brown text-am-red hover:bg-am-brown hover:text-am-red' 
               : 'text-gray-700 hover:bg-gray-100 hover:text-gray-700'
           )}
         >
@@ -156,11 +156,11 @@ function MenuItemLv2({
                 size={20} 
                 className={cn(
                   "mr-3 transition-colors duration-200",
-                  !hasChildren && isActive ? 'text-primary' : 'text-gray-500'
+                  !hasChildren && isActive ? 'text-am-red' : 'text-gray-500'
                 )} 
               />
             )}
-            <span className="font-bold">{label}</span>
+            <span className="font-semibold">{label}</span>
           </div>
         </Button>
       )}
@@ -185,7 +185,7 @@ function MenuItemLv3({
             className={cn(
               "flex items-center w-full px-4.5 py-2 text-sm rounded-lg group transition-colors duration-200 h-auto justify-start",
               isActive
-                ? "bg-secondary text-primary hover:bg-secondary hover:text-primary"
+                ? "bg-am-brown text-am-red hover:bg-am-brown hover:text-am-red"
                 : "hover:bg-gray-100 hover:text-gray-900 text-gray-500",
               className
             )}
@@ -194,11 +194,11 @@ function MenuItemLv3({
             <div
               className={cn(
                 "w-2 h-2 rounded-full mr-3 transition-colors duration-200",
-                isActive ? "bg-primary" : "bg-gray-300"
+                isActive ? "bg-am-red" : "bg-gray-300"
               )}
             ></div>
             <div className="flex items-center w-34">
-              <span className="overflow-hidden font-bold text-ellipsis whitespace-nowrap">
+              <span className="overflow-hidden font-semibold text-ellipsis whitespace-nowrap">
                 {label}
               </span>
             </div>

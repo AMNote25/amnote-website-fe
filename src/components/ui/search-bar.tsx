@@ -93,7 +93,7 @@ export default function SearchBar({
             size={18}
             className={cn(
               "transition-colors duration-200",
-              isFocused ? "text-primary" : "text-gray-400"
+              isFocused ? "text-am-red" : "text-gray-400"
             )}
           />
         </div>

@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import NavContent from "./navcontent";
 import SearchBar from "../ui/search-bar";
 import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
+import Logo from "./logo";
 
 interface SidebarLayoutProps {
   onMenuChange?: (menu: any) => void;
@@ -11,7 +13,7 @@ export default function NavBar({ onMenuChange }: SidebarLayoutProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const handleSearchChange = useCallback((query: string) => {
     // Input validation
-    if (typeof query === 'string') {
+    if (typeof query === "string") {
       setSearchQuery(query);
     }
   }, []);
@@ -20,31 +22,27 @@ export default function NavBar({ onMenuChange }: SidebarLayoutProps) {
   }, []);
 
   return (
-    <div className="flex flex-col h-full bg-white border-r border-gray-200">
-      <div className="p-4 border-b border-gray-200">
-        <div className="text-xl font-bold text-gray-800">AMnote</div>
+    <div className="text-card-foreground border shadow-sm flex flex-col items-start w-full h-full p-6 gap-6 bg-sidebar max-w-2xs rounded-2xl">
+      <div className="w-full flex items-center justify-between py-4">
+        <Logo />
       </div>
-      
-      <div className="p-3 border-b border-gray-200">
-        <SearchBar 
+      <Separator className="w-full" />
+      <div className="flex items-center w-full justify-center">
+        <SearchBar
           value={searchQuery}
           onChange={handleSearchChange}
           onClear={handleSearchClear}
           placeholder="Tìm kiếm menu..."
-          maxLength={50} 
+          maxLength={50}
         />
       </div>
-      <div className="flex-1 overflow-auto">
-        <ScrollArea className="h-full">
-          <div className="p-2">
-            <NavContent 
-              onMenuChange={onMenuChange} 
-              searchQuery={searchQuery}
-            />
-          </div>
+      <Separator className="w-full" />
+
+      <div className="flex-1 overflow-auto w-full">
+        <ScrollArea className="h-full w-full">
+          <NavContent onMenuChange={onMenuChange} searchQuery={searchQuery} />
         </ScrollArea>
       </div>
     </div>
   );
 }
-

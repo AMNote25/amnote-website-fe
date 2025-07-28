@@ -141,6 +141,21 @@ body {
   color: var(--amnote-brown);
 }
 
+.ring-primary {
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
+.bg-am-red {
+  background-color: var(--amnote-red);
+}
+.bg-am-brown {
+  background-color: var(--amnote-brown);
+}
+
 .hover.text-am-red:hover {
   color: var(--amnote-red);
 }
@@ -162,6 +177,14 @@ body {
 
 .text-muted {
   color: var(--muted-foreground);
+}
+
+.bg-primary{
+  background-color: var(--primary);
+}
+
+.bg-secondary{
+  background-color: var(--secondary);
 }
 
 .bg-header {

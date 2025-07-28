@@ -220,7 +220,7 @@ export default function NavContent({ onMenuChange, searchQuery = "" }: NavConten
   );
 
   return (
-    <div className="scrollbar-hover flex flex-col items-start gap-2.5 w-full max-w-2xs h-full bg-white">
+    <div className="overflow-hidden flex flex-col items-start gap-2.5 w-full max-w-2xs h-full bg-white">
       {searchQuery.trim() && filteredMenuData.length === 0 ? (
         <div className="flex flex-col items-center justify-center w-full py-8 text-gray-500">
           <div className="text-sm font-medium">Không tìm thấy kết quả</div>
