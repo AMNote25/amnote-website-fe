@@ -1,6 +1,10 @@
-export default function Logo() {
+interface LogoProps {
+  className?: string;
+}
+
+const Logo: React.FC<LogoProps> = ({ className }) => {
   return (
-    <div className="flex flex-row items-center justify-center w-full h-16 bg-white">
+    <div className={`flex flex-row items-center justify-center w-full h-16 bg-white ${className}`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -10,7 +14,7 @@ export default function Logo() {
         y="0px"
         viewBox="0 0 259.2 175.2"
         xmlSpace="preserve"
-        className="object-contain w-full h-30"
+        className={`object-contain w-full h-30 ${className}`}
       >
         <g>
           <g>
@@ -106,3 +110,5 @@ export default function Logo() {
     </div>
   );
 }
+
+export default Logo;
