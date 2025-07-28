@@ -3,6 +3,16 @@ import Icon from "../ui/icon";
 import Language from "./language";
 import Profile from "./profile";
 
+interface MenuItem {
+  id: string;
+  title: string;
+  type: "item" | "expandable";
+  iconName?: string;
+  children?: MenuItem[];
+  forceExpanded?: boolean;
+  isManuallyExpanded?: boolean;
+}
+
 export default function Header() {
   return (
     <header className="px-6 py-3 transition-colors duration-300 border-b rounded-2xl header-bg header-border header-shadow">

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import Icon from "../ui/icon";
 import iconData from "@/data/iconData";
+import Link from "next/link";
 
 // ✅ Level 1 Props
 interface MenuItemLv1Props {
@@ -22,8 +23,9 @@ interface MenuItemLv1Props {
   className?: string;
 }
 
+// ✅ Level 2 Props
 interface MenuItemLv2Props {
-  label?: ReactNode;            
+  label?: ReactNode;
   iconName?: string;
   children?: ReactNode;
   isActive?: boolean;
@@ -32,15 +34,17 @@ interface MenuItemLv2Props {
   isManuallyExpanded?: boolean;
   onManualExpansion?: (isExpanded: boolean) => void;
   className?: string;
+  link?: string;
   [key: string]: any;
 }
 
 // ✅ Level 3 Props
 interface MenuItemLv3Props {
-  label?: React.ReactNode;    
+  label?: React.ReactNode;
   className?: string;
   isActive?: boolean;
   onClick?: () => void;
+  link?: string;
 }
 
 function MenuItemLv1({
@@ -59,17 +63,18 @@ function MenuItemLv1({
   );
 }
 
-function MenuItemLv2({ 
-  label, 
-  iconName, 
-  children, 
-  isActive = false, 
-  onClick, 
+function MenuItemLv2({
+  label,
+  iconName,
+  children,
+  isActive = false,
+  onClick,
   forceExpanded = undefined,
   isManuallyExpanded = false,
   onManualExpansion,
-  className, 
-  ...props 
+  className,
+  link,
+  ...props
 }: MenuItemLv2Props) {
   const [isExpanded, setIsExpanded] = useState(isManuallyExpanded);
   const hasChildren = !!children;
@@ -83,7 +88,11 @@ function MenuItemLv2({
     if (forceExpanded === true && !wasForceExpanded.current) {
       setIsExpanded(true);
       wasForceExpanded.current = true;
-    } else if (forceExpanded === false && wasForceExpanded.current && !isManuallyExpanded) {
+    } else if (
+      forceExpanded === false &&
+      wasForceExpanded.current &&
+      !isManuallyExpanded
+    ) {
       setIsExpanded(false);
       wasForceExpanded.current = false;
     } else if (forceExpanded === undefined) {
@@ -98,6 +107,7 @@ function MenuItemLv2({
       onManualExpansion?.(newExpandedState);
     } else {
       onClick?.();
+      console.log("Clicked item:", link);
     }
   };
 
@@ -110,22 +120,23 @@ function MenuItemLv2({
               variant="ghost"
               className={cn(
                 "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto",
-                "text-gray-700 hover:bg-gray-100 font-medium",
+                "text-gray-700 hover:bg-gray-100 font-medium"
               )}
             >
               <div className="flex items-center">
-                {iconName && Icon.hasIcon(iconName as keyof typeof iconData) && (
-                  <Icon 
-                    name={iconName as keyof typeof iconData} 
-                    size={20} 
-                    className="mr-3 text-gray-500 transition-colors duration-200" 
-                  />
-                )}
+                {iconName &&
+                  Icon.hasIcon(iconName as keyof typeof iconData) && (
+                    <Icon
+                      name={iconName as keyof typeof iconData}
+                      size={20}
+                      className="mr-3 text-gray-500 transition-colors duration-200"
+                    />
+                  )}
                 <span className="font-semibold">{label}</span>
               </div>
-              <Icon 
-                name="chevron-right" 
-                size={16} 
+              <Icon
+                name="chevron-right"
+                size={16}
                 className={cn(
                   "text-gray-400 transition-transform duration-300 ease-in-out",
                   isExpanded && "rotate-90"
@@ -133,7 +144,7 @@ function MenuItemLv2({
               />
             </Button>
           </CollapsibleTrigger>
-          
+
           <CollapsibleContent className="transition-all duration-300 ease-in-out">
             <div className="pt-1 space-y-1">{children}</div>
           </CollapsibleContent>
@@ -144,24 +155,26 @@ function MenuItemLv2({
           onClick={handleClick}
           className={cn(
             "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto font-medium",
-            !hasChildren && isActive 
-              ? 'bg-am-brown text-am-red hover:bg-am-brown hover:text-am-red' 
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-700'
+            !hasChildren && isActive
+              ? "bg-am-brown text-am-red hover:bg-am-brown hover:text-am-red"
+              : "text-gray-700 hover:bg-gray-100 hover:text-gray-700"
           )}
         >
-          <div className="flex items-center">
-            {iconName && Icon.hasIcon(iconName as keyof typeof iconData) && (
-              <Icon 
-                name={iconName as keyof typeof iconData} 
-                size={20} 
-                className={cn(
-                  "mr-3 transition-colors duration-200",
-                  !hasChildren && isActive ? 'text-am-red' : 'text-gray-500'
-                )} 
-              />
-            )}
-            <span className="font-semibold">{label}</span>
-          </div>
+          <Link href={link || "admin"} className="flex items-center w-full">
+            <div className="flex items-center">
+              {iconName && Icon.hasIcon(iconName as keyof typeof iconData) && (
+                <Icon
+                  name={iconName as keyof typeof iconData}
+                  size={20}
+                  className={cn(
+                    "mr-3 transition-colors duration-200",
+                    !hasChildren && isActive ? "text-am-red" : "text-gray-500"
+                  )}
+                />
+              )}
+              <span className="font-semibold">{label}</span>
+            </div>
+          </Link>
         </Button>
       )}
     </div>
@@ -173,6 +186,7 @@ function MenuItemLv3({
   onClick,
   isActive = false,
   className,
+  link,
   ...props
 }: MenuItemLv3Props) {
   return (
@@ -191,17 +205,19 @@ function MenuItemLv3({
             )}
             {...props}
           >
-            <div
-              className={cn(
-                "w-2 h-2 rounded-full mr-3 transition-colors duration-200",
-                isActive ? "bg-am-red" : "bg-gray-300"
-              )}
-            ></div>
-            <div className="flex items-center w-34">
-              <span className="overflow-hidden font-semibold text-ellipsis whitespace-nowrap">
-                {label}
-              </span>
-            </div>
+            <Link href={link || "admnin"} className="flex items-center w-full">
+              <div
+                className={cn(
+                  "w-2 h-2 rounded-full mr-3 transition-colors duration-200",
+                  isActive ? "bg-am-red" : "bg-gray-300"
+                )}
+              ></div>
+              <div className="flex items-center w-34">
+                <span className="overflow-hidden font-semibold text-ellipsis whitespace-nowrap">
+                  {label}
+                </span>
+              </div>
+            </Link>
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" align="center">

@@ -15,12 +15,14 @@ interface MenuItem {
   children?: MenuItem[];
   forceExpanded?: boolean;
   isManuallyExpanded?: boolean;
+  link?: string;
 }
 
 interface MenuSection {
   id: string;
   title: string;
   children?: MenuItem[];
+
 }
 
 export default function NavContent({ onMenuChange, searchQuery = "" }: NavContentProps) {
@@ -188,6 +190,7 @@ export default function NavContent({ onMenuChange, searchQuery = "" }: NavConten
               iconName={item.iconName}
               onClick={() => handleItemClick(item.id)}
               isActive={activeItem === item.id}
+              link={item.link}
             />
           );
 
@@ -207,6 +210,7 @@ export default function NavContent({ onMenuChange, searchQuery = "" }: NavConten
                   label={highlightText(child.title, searchQuery)}
                   onClick={() => handleItemClick(child.id)}
                   isActive={activeItem === child.id}
+                  link={child.link}
                 />
               ))}
             </MenuItemLv2>
