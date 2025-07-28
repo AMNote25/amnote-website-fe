@@ -1,5 +1,3 @@
-import { link } from "fs";
-
 export const menuData = [
   {
     id: "1",
