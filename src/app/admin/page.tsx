@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import NavBar from "@/components/nav-bar/navbar";
 import PreLoader from "@/modules/admin/preloader/Preloader";
+import Header from "@/components/header/header";
 
 export default function AdminPage() {
   const [currentMenu, setCurrentMenu] = useState(null);
@@ -12,10 +13,6 @@ export default function AdminPage() {
   const handleLoaderComplete = () => {
     setIsLoading(false);
   };
-
-  // const CurrentPageComponent = useMemo(() => {
-  //   return getPageComponent(currentMenu);
-  // }, [currentMenu]);
 
   return (
     <>
@@ -28,6 +25,9 @@ export default function AdminPage() {
       <div className="flex h-screen gap-6 p-6 app-background">
         <div className="shrink-0 basis-2xs">
           <NavBar onMenuChange={setCurrentMenu} />
+        </div>
+        <div className="flex flex-col min-w-0 gap-6 grow">
+          <Header />
         </div>
       </div>
     </>

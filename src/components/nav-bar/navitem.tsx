@@ -110,7 +110,7 @@ function MenuItemLv2({
               variant="ghost"
               className={cn(
                 "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto",
-                "text-gray-700 hover:bg-gray-100 font-light",
+                "text-gray-700 hover:bg-gray-100 font-medium",
               )}
             >
               <div className="flex items-center">
@@ -143,7 +143,7 @@ function MenuItemLv2({
           variant="ghost"
           onClick={handleClick}
           className={cn(
-            "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto font-light",
+            "flex items-center justify-between w-full px-3 py-2 rounded-lg group transition-colors duration-200 text-sm h-auto font-medium",
             !hasChildren && isActive 
               ? 'bg-am-brown text-am-red hover:bg-am-brown hover:text-am-red' 
               : 'text-gray-700 hover:bg-gray-100 hover:text-gray-700'
