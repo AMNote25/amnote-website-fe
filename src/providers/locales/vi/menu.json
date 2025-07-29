@@ -1,0 +1,15 @@
+{
+  "title": {
+    "inventoryManagement": "Quản lý tồn kho",
+    "companyManagement": "Quản lý công ty",
+    "userManagement": "Quản lý người dùng",
+    "customerManagement": "Quản lý khách hàng",
+    "dashboard": "Bảng điều khiển",
+    "news": "Tin tức"
+  },
+  "subtitle": {
+    "inventoryManagement": "Quản lý thông tin tồn kho",
+    "dashboard": "Tổng quan về hệ thống",
+    "news": "Cập nhật tin tức mới nhất"
+  }
+}

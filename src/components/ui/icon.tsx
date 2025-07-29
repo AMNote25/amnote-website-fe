@@ -3,7 +3,7 @@ import iconData from "@/data/iconData";
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   name: keyof typeof iconData;
   className?: string;
-  size?: number;
+  size?: string | number;
   color?: string;
   strokeWidth?: number;
   onClick?: () => void;

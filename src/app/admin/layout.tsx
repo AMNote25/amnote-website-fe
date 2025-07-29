@@ -23,7 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
         <div className="flex flex-col min-w-0 gap-6 grow">
           <Header />
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex-1 overflow-hidden rounded-lg shadow-sm main-background">{children}</main>
         </div>
       </div>
     </>
