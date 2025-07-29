@@ -3,27 +3,24 @@ import { Edit, Eye, Trash2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ActionBarItem } from "@/components/custom-table/types";
-
-interface InventoryItem {
-  id: string;
-  name: string;
-  category: string;
-  quantity: number;
-  price: number;
-  status: string;
-}
+import { InventoryItem } from "@/api/types/inventory";
+import { deleteInventory } from "@/api/services/service_Inventory";
 
 interface MInventoryTableProps {
   data?: InventoryItem[];
   columns?: ColumnDef<InventoryItem>[];
+  actionBarItems?: ActionBarItem[];
+  onDataChange?: () => void; // Callback to refresh data after operations
 }
 
 export default function MInventoryTable({
   data = [],
   columns: customColumns,
+  actionBarItems,
+  onDataChange,
 }: MInventoryTableProps) {
   
-    const actionBarItems = [
+  const defaultActionBarItems: ActionBarItem[] = [
     {
       icon: "file-down",
       onClick: (selectedRows: any[]) => {
@@ -43,36 +40,12 @@ export default function MInventoryTable({
     {
       icon: "trash-2",
       onClick: (selectedRows: any[]) => {
-        if (
-          confirm(`Delete ${selectedRows.length} selected inventory items?`)
-        ) {
+        if (confirm(`Delete ${selectedRows.length} selected inventory items?`)) {
           console.log("Deleting inventory items:", selectedRows);
           alert(`${selectedRows.length} inventory items deleted!`);
         }
       },
       tooltip: "Delete selected inventory items",
-      variant: "destructive" as const,
-    },
-  ];
-
-  const defaultActionBarItems: ActionBarItem[] = [
-    {
-      icon: "file-down",
-      onClick: (selectedRows: any[]) => {
-        console.log("Exporting items:", selectedRows);
-        alert(`Exporting ${selectedRows.length} items`);
-      },
-      tooltip: "Export selected items",
-    },
-    {
-      icon: "trash-2",
-      onClick: (selectedRows: any[]) => {
-        if (confirm(`Delete ${selectedRows.length} selected items?`)) {
-          console.log("Deleting items:", selectedRows);
-          alert(`${selectedRows.length} items deleted!`);
-        }
-      },
-      tooltip: "Delete selected items",
       variant: "destructive" as const,
     },
   ];
@@ -101,43 +74,61 @@ export default function MInventoryTable({
       enableHiding: false,
     },
     {
-      accessorKey: "id",
-      header: "ID",
+      accessorKey: "PRODUCT_CD",
+      header: "Product Code",
       meta: {
-        label: "ID",
+        label: "Product Code",
       },
     },
     {
-      accessorKey: "name",
-      header: "Name",
+      accessorKey: "PRODUCT_NM",
+      header: "Product Name",
       meta: {
-        label: "Name",
+        label: "Product Name",
       },
     },
     {
-      accessorKey: "category",
-      header: "Category",
+      accessorKey: "PRODUCT_NM_ENG",
+      header: "Product Name (EN)",
       meta: {
-        label: "Category",
+        label: "Product Name (English)",
+      },
+    },
+    {
+      accessorKey: "DIVISION_CD",
+      header: "Division",
+      meta: {
+        label: "Division Code",
         variant: "select",
-        options: [
-          { label: "Electronics", value: "electronics" },
-          { label: "Clothing", value: "clothing" },
-          { label: "Books", value: "books" },
-        ],
       },
     },
     {
-      accessorKey: "quantity",
-      header: "Quantity",
+      accessorKey: "DEPARTMENT_CD",
+      header: "Department",
       meta: {
-        label: "Quantity",
+        label: "Department Code",
+        variant: "select",
+      },
+    },
+    {
+      accessorKey: "PRODUCTKIND_CD",
+      header: "Product Kind",
+      meta: {
+        label: "Product Kind Code",
+        variant: "select",
+      },
+    },
+    {
+      accessorKey: "FITNESS_STOCK",
+      header: "Stock Quantity",
+      meta: {
+        label: "Stock Quantity",
         variant: "number",
       },
     },
     {
-      accessorKey: "price",
-      header: "Price",
+      accessorKey: "UNIT_PRICE_CC",
+      header: "Unit Price (CC)",
       cell: ({ getValue }) => {
         const amount = getValue() as number;
         return new Intl.NumberFormat("vi-VN", {
@@ -146,55 +137,126 @@ export default function MInventoryTable({
         }).format(amount);
       },
       meta: {
-        label: "Price",
+        label: "Unit Price (CC)",
         variant: "number",
       },
     },
     {
-      accessorKey: "status",
+      accessorKey: "UNIT_PRICE_FC",
+      header: "Unit Price (FC)",
+      cell: ({ getValue }) => {
+        const amount = getValue() as number;
+        return new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount);
+      },
+      meta: {
+        label: "Unit Price (FC)",
+        variant: "number",
+      },
+    },
+    {
+      accessorKey: "STOCK_UNIT",
+      header: "Stock Unit",
+      meta: {
+        label: "Stock Unit",
+      },
+    },
+    {
+      accessorKey: "STORE_CD",
+      header: "Store Code",
+      meta: {
+        label: "Store Code",
+        variant: "select",
+      },
+    },
+    {
+      accessorKey: "ISUSE",
       header: "Status",
+      cell: ({ getValue }) => {
+        const value = getValue() as string;
+        return value === "Y" ? "Active" : "Inactive";
+      },
       meta: {
         label: "Status",
         variant: "select",
         options: [
-          { label: "In Stock", value: "in_stock" },
-          { label: "Out of Stock", value: "out_of_stock" },
-          { label: "Low Stock", value: "low_stock" },
+          { label: "Active", value: "Y" },
+          { label: "Inactive", value: "N" },
         ],
       },
     },
-  ];
-
-  const mockData: InventoryItem[] = [
     {
-      id: "1",
-      name: "Laptop Dell XPS 13",
-      category: "electronics",
-      quantity: 15,
-      price: 25000000,
-      status: "in_stock",
+      accessorKey: "INBOUND_QUANTITY",
+      header: "Inbound Qty",
+      cell: ({ getValue }) => {
+        const value = getValue() as number | null;
+        return value !== null ? value.toLocaleString() : "-";
+      },
+      meta: {
+        label: "Inbound Quantity",
+        variant: "number",
+      },
     },
     {
-      id: "2",
-      name: "T-shirt Cotton",
-      category: "clothing",
-      quantity: 0,
-      price: 250000,
-      status: "out_of_stock",
+      accessorKey: "OUTBOUND_QUANTITY", 
+      header: "Outbound Qty",
+      cell: ({ getValue }) => {
+        const value = getValue() as number | null;
+        return value !== null ? value.toLocaleString() : "-";
+      },
+      meta: {
+        label: "Outbound Quantity",
+        variant: "number",
+      },
     },
     {
-      id: "3",
-      name: "JavaScript Guide",
-      category: "books",
-      quantity: 5,
-      price: 150000,
-      status: "low_stock",
+      accessorKey: "EX_RATE",
+      header: "Exchange Rate",
+      cell: ({ getValue }) => {
+        const value = getValue() as number;
+        return value.toLocaleString("en-US", { 
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 4 
+        });
+      },
+      meta: {
+        label: "Exchange Rate",
+        variant: "number",
+      },
+    },
+    {
+      accessorKey: "ORIGIN",
+      header: "Origin",
+      meta: {
+        label: "Origin",
+      },
+    },
+    {
+      accessorKey: "VAT_RATE",
+      header: "VAT Rate (%)",
+      cell: ({ getValue }) => {
+        const value = getValue() as number;
+        return `${value}%`;
+      },
+      meta: {
+        label: "VAT Rate",
+        variant: "number",
+      },
+    },
+    {
+      accessorKey: "SUMMARY",
+      header: "Summary",
+      meta: {
+        label: "Summary",
+      },
     },
   ];
 
   return (
     <Table
-      data={data.length > 0 ? data : mockData}
+      data={data}
       columns={customColumns || defaultColumns}
       actionBarItems={actionBarItems || defaultActionBarItems}
     />

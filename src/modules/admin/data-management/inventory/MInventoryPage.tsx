@@ -5,11 +5,79 @@ import getPageTitle from "@/utils/getPageTitle";
 import { usePathname } from "next/navigation";
 import { NuqsAdapter } from "nuqs/adapters/react";
 import MInventoryTable from "./MInventoryTable";
+import { getAllInventory, deleteInventory } from "@/api/services/service_Inventory";
+import { use, useEffect, useState } from "react";
+import { InventoryItem } from "@/api/types/inventory";
 
 export default function InventoryPage() {
   const pathname = usePathname();
   const pageTitle = getPageTitle(pathname);
+  const [inventoryData, setInventoryData] = useState<InventoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getAllInventory();
+      setInventoryData(response.data || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load inventory data");
+      setInventoryData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const actionBarItems = [
+    {
+      icon: "file-down",
+      onClick: (selectedRows: InventoryItem[]) => {
+        console.log("Exporting inventory items:", selectedRows);
+        // TODO: Implement export functionality
+        alert(`Exporting ${selectedRows.length} inventory items`);
+      },
+      tooltip: "Export selected inventory items",
+    },
+    {
+      icon: "edit",
+      onClick: (selectedRows: InventoryItem[]) => {
+        console.log("Editing inventory items:", selectedRows);
+        // TODO: Implement bulk edit functionality
+        alert(`Editing ${selectedRows.length} inventory items`);
+      },
+      tooltip: "Edit selected inventory items",
+    },
+    {
+      icon: "trash-2",
+      onClick: async (selectedRows: InventoryItem[]) => {
+        if (confirm(`Delete ${selectedRows.length} selected inventory items?`)) {
+          try {
+            // Delete each selected item
+            const deletePromises = selectedRows.map(item => 
+              deleteInventory(item.PRODUCT_CD)
+            );
+            await Promise.all(deletePromises);
+            
+            // Refresh the data after deletion
+            await fetchData();
+            
+            alert(`${selectedRows.length} inventory items deleted successfully!`);
+          } catch (error) {
+            console.error("Error deleting inventory items:", error);
+            alert("Failed to delete some inventory items. Please try again.");
+          }
+        }
+      },
+      tooltip: "Delete selected inventory items",
+      variant: "destructive" as const,
+    },
+  ];
 
   return (
     <NuqsAdapter>
@@ -27,7 +95,6 @@ export default function InventoryPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => {
-                  // Export functionality
                   alert("Export functionality");
                 }}
                 className="flex items-center gap-2"
@@ -50,7 +117,21 @@ export default function InventoryPage() {
             </div>
           </div>
           {/* Insert the toolbar here */}
-          <MInventoryTable />
+          {loading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-muted-foreground">Loading inventory data...</div>
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-red-500">Error: {error}</div>
+            </div>
+          ) : (
+            <MInventoryTable 
+              data={inventoryData} 
+              actionBarItems={actionBarItems}
+              onDataChange={fetchData}
+            />
+          )}
         </div>
       </div>
     </NuqsAdapter>
