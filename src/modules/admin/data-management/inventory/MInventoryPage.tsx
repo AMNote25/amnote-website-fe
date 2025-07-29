@@ -8,6 +8,7 @@ import MInventoryTable from "./MInventoryTable";
 import { getAllInventory, deleteInventory } from "@/api/services/service_Inventory";
 import { use, useEffect, useState } from "react";
 import { InventoryItem } from "@/api/types/inventory";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 
 export default function InventoryPage() {
   const pathname = usePathname();
@@ -43,15 +44,6 @@ export default function InventoryPage() {
         alert(`Exporting ${selectedRows.length} inventory items`);
       },
       tooltip: "Export selected inventory items",
-    },
-    {
-      icon: "edit",
-      onClick: (selectedRows: InventoryItem[]) => {
-        console.log("Editing inventory items:", selectedRows);
-        // TODO: Implement bulk edit functionality
-        alert(`Editing ${selectedRows.length} inventory items`);
-      },
-      tooltip: "Edit selected inventory items",
     },
     {
       icon: "trash-2",
@@ -118,9 +110,13 @@ export default function InventoryPage() {
           </div>
           {/* Insert the toolbar here */}
           {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="text-muted-foreground">Loading inventory data...</div>
-            </div>
+            <DataTableSkeleton 
+              columnCount={16} 
+              rowCount={8}
+              cellWidths={["50px", "120px", "200px", "150px", "100px", "100px", "120px", "100px", "120px", "120px", "100px", "100px", "100px", "100px", "100px", "80px"]}
+              withPagination={true}
+              withViewOptions={true}
+            />
           ) : error ? (
             <div className="flex items-center justify-center h-64">
               <div className="text-red-500">Error: {error}</div>

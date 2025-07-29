@@ -14,6 +14,14 @@ export interface ActionBarItem {
   disabled?: boolean;
 }
 
+export interface RowAction {
+  label: string;
+  icon?: React.ReactNode;
+  onClick: (data: any) => void;
+  className?: string;
+  separator?: boolean;
+}
+
 export interface FilterOption {
   value: string;
   label: string;

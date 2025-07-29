@@ -17,12 +17,12 @@ import React from "react";
 import { DataTable } from "../data-table/data-table";
 import Toolbar from "./tool-bar";
 import TableActionBar from "./action-bar";
-import { AdvancedFilter, ActionBarItem } from "./types";
+import { AdvancedFilter, ActionBarItem, RowAction } from "./types";
 
 interface TableProps {
   data: any[];
   columns: ColumnDef<any>[];
-  rowActions?: any[];
+  rowActions?: RowAction[];
   actionBarItems?: ActionBarItem[];
 }
 
@@ -65,6 +65,7 @@ export default function Table({ data, columns, rowActions, actionBarItems }: Tab
   return (
     <DataTable
       table={table}
+      rowActions={rowActions}
       actionBar={
         <TableActionBar 
           table={table} 

@@ -95,10 +95,10 @@ function DataTableActionBarAction({
 }: DataTableActionBarActionProps) {
   const trigger = (
     <Button
-      variant="secondary"
+      variant="outline"
       size={size}
       className={cn(
-        "gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5",
+        "gap-1.5 border bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5",
         size === "icon" ? "size-7" : "h-7",
         className,
       )}
