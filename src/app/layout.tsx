@@ -14,6 +14,10 @@ export default function RootLayout({
   return (
     <>
       <html lang="en">
+        <head>
+          <link rel="icon" type="image/svg+xml" href="/AMnote_minilogo.svg" />
+          <title>AMnote | Phần mềm kế toán nè</title>
+        </head>
         <body>{children}</body>
       </html>
     </>
