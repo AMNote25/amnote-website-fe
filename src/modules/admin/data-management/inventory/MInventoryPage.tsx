@@ -1,14 +1,21 @@
-import { Button } from "@/components/ui/button";
-import Icon from "@/components/ui/icon";
 import Title from "@/components/ui/title";
 import getPageTitle from "@/utils/getPageTitle";
 import { usePathname } from "next/navigation";
 import { NuqsAdapter } from "nuqs/adapters/react";
-import MInventoryTable from "./MInventoryTable";
-import { getAllInventory, deleteInventory } from "@/api/services/service_Inventory";
-import { use, useEffect, useState } from "react";
+import {
+  getAllInventory,
+  deleteInventory,
+} from "@/api/services/service_Inventory";
+import { useEffect, useState } from "react";
 import { InventoryItem } from "@/api/types/inventory";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
+import {
+  MInventoryExportAll,
+  MInventoryExportSelected,
+  exportSelectedInventory,
+} from "./MInventoryExport";
+import MInventoryTable from "./MInventoryTable";
+import MInventoryImport from "./MInventoryImport";
 
 export default function InventoryPage() {
   const pathname = usePathname();
@@ -24,7 +31,9 @@ export default function InventoryPage() {
       const response = await getAllInventory();
       setInventoryData(response.data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load inventory data");
+      setError(
+        err instanceof Error ? err.message : "Failed to load inventory data"
+      );
       setInventoryData([]);
     } finally {
       setLoading(false);
@@ -39,27 +48,29 @@ export default function InventoryPage() {
     {
       icon: "file-down",
       onClick: (selectedRows: InventoryItem[]) => {
-        console.log("Exporting inventory items:", selectedRows);
-        // TODO: Implement export functionality
-        alert(`Exporting ${selectedRows.length} inventory items`);
+        exportSelectedInventory(selectedRows);
       },
       tooltip: "Export selected inventory items",
     },
     {
       icon: "trash-2",
       onClick: async (selectedRows: InventoryItem[]) => {
-        if (confirm(`Delete ${selectedRows.length} selected inventory items?`)) {
+        if (
+          confirm(`Delete ${selectedRows.length} selected inventory items?`)
+        ) {
           try {
             // Delete each selected item
-            const deletePromises = selectedRows.map(item => 
+            const deletePromises = selectedRows.map((item) =>
               deleteInventory(item.PRODUCT_CD)
             );
             await Promise.all(deletePromises);
-            
+
             // Refresh the data after deletion
             await fetchData();
-            
-            alert(`${selectedRows.length} inventory items deleted successfully!`);
+
+            alert(
+              `${selectedRows.length} inventory items deleted successfully!`
+            );
           } catch (error) {
             console.error("Error deleting inventory items:", error);
             alert("Failed to delete some inventory items. Please try again.");
@@ -83,37 +94,33 @@ export default function InventoryPage() {
             />
             <div className="flex items-center gap-2">
               {/* Replace these button with module buttons for each module is a separate button */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  alert("Export functionality");
-                }}
-                className="flex items-center gap-2"
-              >
-                <Icon name="download" size="sm" />
-                Xuất dữ liệu
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  // Import functionality
-                  alert("Import functionality");
-                }}
-                className="flex items-center gap-2"
-              >
-                <Icon name="upload" size="sm" />
-                Nhập dữ liệu
-              </Button>
+              <MInventoryExportAll data={inventoryData} loading={loading} />
+              <MInventoryImport />
             </div>
           </div>
           {/* Insert the toolbar here */}
           {loading ? (
-            <DataTableSkeleton 
-              columnCount={16} 
+            <DataTableSkeleton
+              columnCount={16}
               rowCount={8}
-              cellWidths={["50px", "120px", "200px", "150px", "100px", "100px", "120px", "100px", "120px", "120px", "100px", "100px", "100px", "100px", "100px", "80px"]}
+              cellWidths={[
+                "50px",
+                "120px",
+                "200px",
+                "150px",
+                "100px",
+                "100px",
+                "120px",
+                "100px",
+                "120px",
+                "120px",
+                "100px",
+                "100px",
+                "100px",
+                "100px",
+                "100px",
+                "80px",
+              ]}
               withPagination={true}
               withViewOptions={true}
             />
@@ -122,8 +129,8 @@ export default function InventoryPage() {
               <div className="text-red-500">Error: {error}</div>
             </div>
           ) : (
-            <MInventoryTable 
-              data={inventoryData} 
+            <MInventoryTable
+              data={inventoryData}
               actionBarItems={actionBarItems}
               onDataChange={fetchData}
             />
