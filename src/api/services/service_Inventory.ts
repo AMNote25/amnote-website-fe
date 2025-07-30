@@ -92,7 +92,7 @@ const API_BASE_URL = "http://118.69.170.50/API"
 const API_PRODUCT = `${API_BASE_URL}/api/ProductInfo`;
 
 function getAuthHeaders() {
-  const token =`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMTguNjkuMTcwLjUwXC9BUElcL2FwaVwvbG9naW4iLCJpYXQiOjE3NTM3NzI4MzksImV4cCI6MTc1MzgxNjAzOSwibmJmIjoxNzUzNzcyODM5LCJqdGkiOiJ6ZXdVMGdwSlhFNUdxdkJNIiwic3ViIjoxNDMzMSwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSIsIklQIjoiIn0.-kOneYCEtbaQajUXwYj1A2w3aSnLlA7D-H-aEwrOwts`
+  const token = localStorage.getItem("access_token");
   return {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",

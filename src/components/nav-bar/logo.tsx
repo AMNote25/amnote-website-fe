@@ -4,7 +4,6 @@ interface LogoProps {
 
 const Logo: React.FC<LogoProps> = ({ className }) => {
   return (
-    <div className={`flex flex-row items-center justify-center w-full h-16 bg-white ${className}`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -14,7 +13,7 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
         y="0px"
         viewBox="0 0 259.2 175.2"
         xmlSpace="preserve"
-        className={`object-contain w-full h-30 ${className}`}
+        className={`object-contain ${className}`}
       >
         <g>
           <g>
@@ -107,7 +106,6 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
           </g>
         </g>
       </svg>
-    </div>
   );
 }
 

@@ -7,6 +7,7 @@ import Header from "@/components/header/header";
 import PreLoader from "@/modules/admin/preloader/Preloader";
 import { Toaster } from "@/components/ui/sonner";
 import { CheckCircle } from "lucide-react";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
 
 export default function AdminLayout({
   children,
@@ -15,11 +16,18 @@ export default function AdminLayout({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const LOADER_DURATION = 1000;
+  const { isAuthenticated } = useAuthCheck();
 
   const handleLoaderComplete = () => setIsLoading(false);
 
+  // Show nothing while checking authentication (will redirect if not authenticated)
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <>
+      <Toaster position="top-center" />
       {isLoading && (
         <PreLoader
           onComplete={handleLoaderComplete}
@@ -35,9 +43,6 @@ export default function AdminLayout({
           <main className="flex-1 overflow-hidden rounded-lg shadow-sm main-background">
             {children}
           </main>
-          <Toaster
-            position="top-center"
-          />
         </div>
       </div>
     </>
