@@ -30,7 +30,7 @@ export default function Toolbar({
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search all columns..."
+            placeholder="Tìm kiếm..."
             value={globalFilter ?? ""}
             onChange={(event) => setGlobalFilter(event.target.value)}
             className="pl-8 h-9 w-72"
