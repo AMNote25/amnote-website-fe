@@ -1,23 +1,15 @@
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
+/**
+ * Hook for checking authentication status
+ * Uses the AuthContext for consistent authentication state management
+ * @deprecated Use useAuth hook directly instead
+ */
 export function useAuthCheck() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    
-    if (!token) {
-      // No token found, redirect to login
-      router.push("/auth/login");
-    }
-  }, [router]);
+  const { isLoggedIn, logout } = useAuth();
 
   return {
-    isAuthenticated: !!localStorage.getItem("access_token"),
-    logout: () => {
-      localStorage.removeItem("access_token");
-      router.push("/auth/login");
-    }
+    isAuthenticated: isLoggedIn,
+    logout
   };
 }

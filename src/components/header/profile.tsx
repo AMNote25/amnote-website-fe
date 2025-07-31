@@ -20,6 +20,7 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProfileProps {
   name: string;
@@ -31,6 +32,7 @@ interface ProfileProps {
 
 export default function Profile() {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout, loading } = useAuth();
 
   const example_data: ProfileProps = {
     name: "Nguyễn Thị Lan",
@@ -42,6 +44,15 @@ export default function Profile() {
 
   const handleMenuClick = () => {
     setIsOpen(false);
+  };
+
+  /**
+   * Handle logout functionality
+   * Uses the logout method from AuthContext
+   */
+  const handleLogout = async () => {
+    setIsOpen(false);
+    await logout();
   };
 
   return (
@@ -108,9 +119,9 @@ export default function Profile() {
           <CircleQuestionMark />
           <span>Trợ giúp</span>
         </DropdownMenuItem>
-        <DropdownMenuItem variant="destructive" onClick={handleMenuClick}>
+        <DropdownMenuItem variant="destructive" onClick={handleLogout} disabled={loading}>
           <LogOut />
-          <span>Đăng xuất</span>
+          <span>{loading ? "Đang đăng xuất..." : "Đăng xuất"}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

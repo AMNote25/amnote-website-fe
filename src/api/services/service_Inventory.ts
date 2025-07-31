@@ -92,7 +92,7 @@ const API_BASE_URL = "http://118.69.170.50/API"
 const API_PRODUCT = `${API_BASE_URL}/api/ProductInfo`;
 
 function getAuthHeaders() {
-  const token = localStorage.getItem("access_token");
+  const token = sessionStorage.getItem("access_token");
   return {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",

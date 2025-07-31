@@ -4,61 +4,67 @@ import Logo from "@/components/nav-bar/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { login } from "@/api/services/service_Authentication";
+import { useAuth } from "@/contexts/AuthContext";
 
+/**
+ * Login Page Component
+ * Provides user interface for authentication
+ */
 export default function MLoginPage() {
+  // Form state management
   const [formData, setFormData] = useState({
     companyID: "",
     username: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
+  
+  // Get authentication methods from context
+  const { login, loading } = useAuth();
 
+  /**
+   * Handle input field changes
+   * @param e - Input change event
+   */
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
+  /**
+   * Handle form submission for login
+   * @param e - Form submission event
+   */
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validate required fields
     if (!formData.companyID || !formData.username || !formData.password) {
       setError("Vui lòng điền đầy đủ thông tin");
       return;
     }
 
-    setLoading(true);
+    // Clear any existing errors
     setError("");
 
-    try {
-      const response = await login({
-        username: formData.username,
-        password: formData.password,
-        companyID: formData.companyID,
-        Lag: "VIET"
-      });
+    // Attempt login using context method
+    const result = await login({
+      username: formData.username,
+      password: formData.password,
+      companyID: formData.companyID,
+      Lag: "VIET"
+    });
 
-      if (response.ok && response.data?.access_token) {
-        // Store token in localStorage
-        localStorage.setItem("access_token", response.data.access_token);
-        
-        // Redirect to admin page
-        router.push("/admin");
-      } else {
-        setError(response.data?.message || "Đăng nhập thất bại");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setError("Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.");
-    } finally {
-      setLoading(false);
+    // Handle login result
+    if (!result.success) {
+      setError(result.error || "Đăng nhập thất bại");
     }
+    // Success case is handled by AuthContext (automatic redirect)
   };
   return (
     <div className="flex-1">

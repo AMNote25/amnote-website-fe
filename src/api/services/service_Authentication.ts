@@ -7,6 +7,17 @@ export interface LoginParams {
   Lag?: string
 }
 
+export interface LoginResponse {
+  access_token?: string
+  message?: string
+  // Add other response fields as needed
+}
+
+/**
+ * Login function that authenticates user and returns token
+ * @param credentials - User login credentials
+ * @returns Promise with login response
+ */
 export async function login({ username, password, companyID, Lag = "VIET" }: LoginParams) {
   const response = await fetch(`${API_BASE_URL}/api/login`, {
     method: "POST",
@@ -15,10 +26,14 @@ export async function login({ username, password, companyID, Lag = "VIET" }: Log
     },
     body: JSON.stringify({ username, password, companyID, Lag }),
   })
-  const data = await response.json()
+  const data: LoginResponse = await response.json()
   return { ok: response.ok, data }
 }
 
+/**
+ * Logout function that calls API to invalidate token
+ * @returns Promise with logout response
+ */
 export async function logout() {
   try {
     const response = await fetch(`${API_BASE_URL}/api/logout`, {
