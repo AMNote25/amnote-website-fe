@@ -24,7 +24,7 @@ export interface InventoryPayload {
   lblCCType: string;
   lblFCType: string;
   txtSummary: string;
-  rgUseNotUse: string;
-  HaveChildBOM: string;
+  rgUseNotUse: "1";
+  HaveChildBOM: "Y";
   Origin: string;
 }
