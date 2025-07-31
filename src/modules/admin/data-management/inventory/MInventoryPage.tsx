@@ -16,6 +16,7 @@ import {
 } from "./MInventoryExport";
 import MInventoryTable from "./MInventoryTable";
 import MInventoryImport from "./MInventoryImport";
+import MInventoryInsert from "./MInventoryInsert";
 
 export default function InventoryPage() {
   const pathname = usePathname();
@@ -96,6 +97,7 @@ export default function InventoryPage() {
               {/* Replace these button with module buttons for each module is a separate button */}
               <MInventoryExportAll data={inventoryData} loading={loading} />
               <MInventoryImport />
+              <MInventoryInsert />
             </div>
           </div>
           {/* Insert the toolbar here */}

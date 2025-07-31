@@ -7,70 +7,7 @@ import {
 } from "@/utils/exportUtils";
 import { toast } from "sonner";
 import { CheckCircle, TriangleAlert } from "lucide-react";
-
-// Inventory-specific export configuration
-const INVENTORY_EXPORT_HEADERS = [
-  "Mã sản phẩm",
-  "Tên sản phẩm",
-  "Tên sản phẩm (EN)",
-  "Mã phân loại",
-  "Mã phòng ban",
-  "Mã loại sản phẩm",
-  "Số lượng tồn kho",
-  "Giá đơn vị (CC)",
-  "Giá đơn vị (FC)",
-  "Đơn vị tồn kho",
-  "Mã cửa hàng",
-  "Trạng thái",
-  "Số lượng nhập",
-  "Số lượng xuất",
-  "Tỷ giá",
-  "Nguồn gốc",
-  "Tỷ lệ VAT (%)",
-  "Tóm tắt",
-];
-
-const INVENTORY_EXPORT_COLUMNS: (keyof InventoryItem)[] = [
-  "PRODUCT_CD",
-  "PRODUCT_NM",
-  "PRODUCT_NM_ENG",
-  "DIVISION_CD",
-  "DEPARTMENT_CD",
-  "PRODUCTKIND_CD",
-  "FITNESS_STOCK",
-  "UNIT_PRICE_CC",
-  "UNIT_PRICE_FC",
-  "STOCK_UNIT",
-  "STORE_CD",
-  "ISUSE",
-  "INBOUND_QUANTITY",
-  "OUTBOUND_QUANTITY",
-  "EX_RATE",
-  "ORIGIN",
-  "VAT_RATE",
-  "SUMMARY",
-];
-
-const INVENTORY_COLUMN_WIDTHS = [
-  { wch: 15 },
-  { wch: 25 },
-  { wch: 25 },
-  { wch: 15 },
-  { wch: 15 },
-  { wch: 18 },
-  { wch: 15 },
-  { wch: 18 },
-  { wch: 18 },
-  { wch: 15 },
-  { wch: 15 },
-  { wch: 15 },
-  { wch: 15 },
-  { wch: 15 },
-  { wch: 12 },
-  { wch: 15 },
-  { wch: 15 },
-  { wch: 30 },
-];
+import { INVENTORY_EXPORT_HEADERS, INVENTORY_EXPORT_COLUMNS, INVENTORY_COLUMN_WIDTHS } from "@/constants/CInventory";
 
 interface MInventoryExportAllProps {
   data?: InventoryItem[];
