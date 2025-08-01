@@ -17,7 +17,6 @@ interface AFormProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   className?: string;
-  [key: string]: any;
 }
 
 export default function AForm({

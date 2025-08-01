@@ -6,18 +6,18 @@ export interface AdvancedFilter {
   conjunction: string;
 }
 
-export interface ActionBarItem {
+export interface ActionBarItem<T = unknown> {
   icon: string;
-  onClick: (selectedRows: any[]) => void;
+  onClick: (selectedRows: T[]) => void;
   tooltip: string;
   variant?: "destructive" | "default";
   disabled?: boolean;
 }
 
-export interface RowAction {
+export interface RowAction<T = unknown> {
   label: string;
   icon?: React.ReactNode;
-  onClick: (data: any) => void;
+  onClick: (data: T) => void;
   className?: string;
   separator?: boolean;
 }

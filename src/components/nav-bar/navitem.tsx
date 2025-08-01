@@ -36,7 +36,6 @@ interface MenuItemLv2Props {
   onManualExpansion?: (isExpanded: boolean) => void;
   className?: string;
   link?: string;
-  [key: string]: any;
 }
 
 // ✅ Level 3 Props

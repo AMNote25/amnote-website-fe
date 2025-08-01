@@ -12,7 +12,7 @@ export interface LanguageData {
   name: string;
   nativeName: string;
   flag: string;
-  flagComponent: React.ComponentType<any>;
+  flagComponent: React.ComponentType<object>;
   countryCode: string;
   direction: string;
   locale: string;

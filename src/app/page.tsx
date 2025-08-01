@@ -1,8 +1,10 @@
 
+import Link from 'next/link';
+
 export default function Page() {
   return (
     <main>
-      <a href="/admin">Admin Page</a>
+      <Link href="/admin">Admin Page</Link>
     </main>
   );
 }

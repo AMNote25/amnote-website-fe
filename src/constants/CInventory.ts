@@ -1,4 +1,3 @@
-import { Input } from '@/components/ui/input';
 import { InventoryItem } from "@/api/types/inventory";
 import { InventoryPayload } from "@/api/types/inventoryPayload";
 

@@ -1,16 +1,19 @@
 import React from "react";
+import Icon from "@/components/ui/icon";
+import iconData from "@/data/iconData";
+
+// Add the rest of your imports here
 import {
   DataTableActionBar,
   DataTableActionBarAction,
   DataTableActionBarSelection,
 } from "@/components/data-table/data-table-action-bar";
-import Icon from "@/components/ui/icon";
 import { Table } from "@tanstack/react-table";
 import { ActionBarItem } from "./types";
 
 interface TableActionBarProps {
-  table: Table<any>;
-  actionBarItems?: ActionBarItem[];
+  table: Table<unknown>;
+  actionBarItems?: ActionBarItem<unknown>[];
 }
 
 export default function TableActionBar({ table, actionBarItems }: TableActionBarProps) {
@@ -24,7 +27,7 @@ export default function TableActionBar({ table, actionBarItems }: TableActionBar
   const defaultActions: ActionBarItem[] = [
     {
       icon: "file-down",
-      onClick: (selectedRows: any[]) => {
+      onClick: (selectedRows: unknown[]) => {
         console.log(`Exporting ${selectedRows.length} items`);
         alert(`Exporting ${selectedRows.length} items`);
       },
@@ -32,7 +35,7 @@ export default function TableActionBar({ table, actionBarItems }: TableActionBar
     },
     {
       icon: "trash-2",
-      onClick: (selectedRows: any[]) => {
+      onClick: (selectedRows: unknown[]) => {
         if (confirm(`Delete ${selectedRows.length} selected items?`)) {
           console.log(`Deleting ${selectedRows.length} items`);
           alert(`${selectedRows.length} items deleted!`);
@@ -61,7 +64,7 @@ export default function TableActionBar({ table, actionBarItems }: TableActionBar
           disabled={action.disabled}
         >
           <Icon 
-            name={action.icon as any} 
+            name={action.icon as keyof typeof iconData} 
             className="w-4 h-4 text-gray-500" 
           />
         </DataTableActionBarAction>

@@ -1,8 +1,9 @@
 import Icon from "./icon";
+import iconData from "@/data/iconData";
 
 interface TitleProps {
   title: string;
-  icon: string;
+  icon: keyof typeof iconData;
   subtitle?: string;
 }
 
@@ -11,7 +12,7 @@ export default function Title({ title, icon, subtitle }: TitleProps) {
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <div className="flex items-center justify-center rounded-xl shadow-sm p-3 bg-brand-accent-light">
-          <Icon name={icon  as any} size={32} className="text-brand-accent" />
+          <Icon name={icon} size={32} className="text-brand-accent" />
         </div>
         <div className="flex flex-col">
           <span className="text-xl font-semibold tracking-tight text-primary">

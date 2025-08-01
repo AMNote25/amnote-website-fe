@@ -20,10 +20,10 @@ import TableActionBar from "./action-bar";
 import { AdvancedFilter, ActionBarItem, RowAction } from "./types";
 
 interface TableProps {
-  data: any[];
-  columns: ColumnDef<any>[];
-  rowActions?: RowAction[];
-  actionBarItems?: ActionBarItem[];
+  data: unknown[];
+  columns: ColumnDef<unknown>[];
+  rowActions?: RowAction<unknown>[];
+  actionBarItems?: ActionBarItem<unknown>[];
 }
 
 export default function Table({ data, columns, rowActions, actionBarItems }: TableProps) {

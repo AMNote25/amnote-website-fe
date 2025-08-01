@@ -89,10 +89,10 @@ export default function MInventoryTable({
     },
   ];
 
-  const defaultActionBarItems: ActionBarItem[] = [
+  const defaultActionBarItems: ActionBarItem<unknown>[] = [
     {
       icon: "file-down",
-      onClick: (selectedRows: any[]) => {
+      onClick: (selectedRows: unknown[]) => {
         console.log("Exporting inventory items:", selectedRows);
         alert(`Exporting ${selectedRows.length} inventory items`);
       },
@@ -100,7 +100,7 @@ export default function MInventoryTable({
     },
     {
       icon: "trash-2",
-      onClick: (selectedRows: any[]) => {
+      onClick: (selectedRows: unknown[]) => {
         if (
           confirm(`Delete ${selectedRows.length} selected inventory items?`)
         ) {

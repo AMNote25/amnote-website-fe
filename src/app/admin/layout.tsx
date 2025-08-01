@@ -6,7 +6,6 @@ import NavBar from "@/components/nav-bar/navbar";
 import Header from "@/components/header/header";
 import PreLoader from "@/modules/admin/preloader/Preloader";
 import { Toaster } from "@/components/ui/sonner";
-import { CheckCircle } from "lucide-react";
 import { useAuthCheck } from "@/hooks/useAuthCheck";
 
 export default function AdminLayout({

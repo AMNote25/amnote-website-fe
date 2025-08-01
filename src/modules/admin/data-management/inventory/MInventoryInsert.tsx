@@ -113,8 +113,9 @@ export default function MInventoryInsert() {
           : result?.messages || "Có lỗi xảy ra khi thêm sản phẩm";
         toast.error(errorMsg);
       }
-    } catch (err: any) {
-      toast.error(err?.message || "Có lỗi xảy ra khi thêm sản phẩm", {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Có lỗi xảy ra khi thêm sản phẩm";
+      toast.error(errorMessage, {
         icon: <TriangleAlert className="text-red-500" />,
         style: {
           gap: "1rem",

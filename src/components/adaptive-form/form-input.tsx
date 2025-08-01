@@ -17,7 +17,7 @@ interface FInputProps {
   placeholder?: string;
   variant?: "optional" | "compulsory"; // "optional" or "compulsory"
   enableSearch?: boolean; // Boolean to enable search functionality
-  onSearchSelect?: (key: string, option: any) => void; // Callback when search option is selected
+  onSearchSelect?: (key: string, option: { label?: string; value?: string; description?: string }) => void; // Callback when search option is selected
   className?: string; // Additional class names for styling
   searchOptions?: Array<{
     label?: string;

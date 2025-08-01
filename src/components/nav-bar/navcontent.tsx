@@ -3,8 +3,17 @@ import { usePathname } from "next/navigation";
 import { MenuItemLv1, MenuItemLv2, MenuItemLv3 } from "./navitem";
 import { menuData } from "@/data/menuData";
 
+interface HeaderMenu {
+  id: string;
+  label: string;
+  iconName?: string;
+  parent?: MenuItem | null;
+  children?: MenuItem[] | null;
+  type: string;
+}
+
 interface NavContentProps {
-  onMenuChange?: (menu: any) => void;
+  onMenuChange?: (menu: HeaderMenu) => void;
   searchQuery?: string;
 }
 
@@ -17,6 +26,7 @@ interface MenuItem {
   forceExpanded?: boolean;
   isManuallyExpanded?: boolean;
   link?: string;
+  parent?: MenuItem;
 }
 
 interface MenuSection {

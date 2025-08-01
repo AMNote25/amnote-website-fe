@@ -6,10 +6,20 @@ interface PageTitle {
   subtitle: string;
 }
 
+interface MenuItem {
+  id: string;
+  title: string;
+  iconName?: string;
+  type: string;
+  link?: string;
+  subtitle?: string;
+  children?: MenuItem[];
+}
+
 export default function getPageTitle(pathname: string): PageTitle | null {
   let found: PageTitle | null = null;
 
-  const search = (items: any[], parent?: any) => {
+  const search = (items: MenuItem[], parent?: MenuItem) => {
     for (const item of items) {
       if (item.link === pathname) {
         found = {
