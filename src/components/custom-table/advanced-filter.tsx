@@ -101,7 +101,7 @@ export default function TableAdvancedFilterSystem({
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm" className="items-center justify-between gap-2 text-sm h-9">
             <Filter className="w-4 h-4 mr-2" />
-            Filters
+            Bộ lọc
             {advancedFilters.length > 0 && (
               <span className="items-center justify-center px-2 py-1 text-xs rounded-full bg-primary text-primary-foreground">
                 {advancedFilters.length}
@@ -112,12 +112,12 @@ export default function TableAdvancedFilterSystem({
         <PopoverContent className="w-full p-4" align="start">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Filters</span>
+              <span className="text-sm font-medium">Bộ lọc xịn</span>
             </div>
             
             {advancedFilters.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                No filters applied. Click "Add filter" to start.
+                Chưa có bộ lọc nào. Hãy nhấn "Thêm bộ lọc" để bắt đầu.
               </p>
             ) : (
               <div className="space-y-3">
@@ -137,15 +137,13 @@ export default function TableAdvancedFilterSystem({
             {/* Action buttons at the bottom */}
             <div className="flex items-center gap-2.5 pt-2 border-t">
               <Button
-                variant="outline"
+                variant="default"
                 size="sm"
                 onClick={addFilter}
-                className="h-8 font-bold
-                hover:text-white hover:bg-[#B71D21] hover:border-[#B71D21] 
-                text-[#B71D21] bg-[#FFE4E4] border-[#FFE4E4]"
+                className="h-8 font-bold"
               >
                 <Plus className="w-4 h-4 mr-1" />
-                Add filter
+                Thêm bộ lọc
               </Button>
               
               {advancedFilters.length > 0 && (
@@ -156,7 +154,7 @@ export default function TableAdvancedFilterSystem({
                   className="h-8"
                 >
                   <X className="w-4 h-4 mr-1" />
-                  Reset filters
+                  Xóa bộ lọc
                 </Button>
               )}
             </div>
