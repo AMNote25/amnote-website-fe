@@ -100,11 +100,49 @@ body {
   display: none; /* Webkit */
 }
 
+/* Smooth scrollbar that appears on hover */
+.scrollbar-smooth {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scrollbar-smooth::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-smooth::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-smooth::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.scrollbar-smooth::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.scrollbar-smooth:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.scrollbar-smooth:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.scrollbar-smooth::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
 /* Custom hover scrollbar effect */
 .custom-scroll {
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color:  transparent transparent;
+  scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.3s ease;
 }
 
@@ -113,7 +151,7 @@ body {
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  background:  var(--border) transparent;
+  background: transparent;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
@@ -123,16 +161,15 @@ body {
 }
 
 .custom-scroll:hover {
-  scrollbar-color:  var(--border) transparent;
+  scrollbar-color: var(--border) transparent;
 }
 
 .custom-scroll:hover::-webkit-scrollbar-thumb {
-  background: important var(--border) transparent;
+  background: var(--border);
 }
 
 .custom-scroll:hover::-webkit-scrollbar-thumb:hover {
-    background: important var(--border) transparent;
-
+  background: var(--muted-foreground);
 }
 
 .text-am-red {

@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { MenuItemLv1, MenuItemLv2, MenuItemLv3 } from "./navitem";
 import { menuData } from "@/data/menuData";
 
@@ -26,8 +27,55 @@ interface MenuSection {
 }
 
 export default function NavContent({ onMenuChange, searchQuery = "" }: NavContentProps) {
+  const pathname = usePathname();
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [manuallyExpandedItems, setManuallyExpandedItems] = useState<Set<string>>(new Set());
+
+  // Find active item based on current pathname
+  const findActiveItemByPath = useCallback((path: string) => {
+    for (const section of menuData) {
+      if (section.children) {
+        for (const item of section.children) {
+          // Check if item has link property
+          if ('link' in item && item.link === path) {
+            return item.id;
+          }
+          // Check children if item has children property
+          if ('children' in item && item.children) {
+            for (const child of item.children) {
+              if (child.link === path) {
+                return child.id;
+              }
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }, []);
+
+  // Set active item based on current pathname on mount and pathname change
+  useEffect(() => {
+    const activeId = findActiveItemByPath(pathname);
+    if (activeId) {
+      setActiveItem(activeId);
+      
+      // Auto-expand parent if child is active
+      for (const section of menuData) {
+        if (section.children) {
+          for (const item of section.children) {
+            if ('children' in item && item.children) {
+              const hasActiveChild = item.children.some(child => child.id === activeId);
+              if (hasActiveChild) {
+                setManuallyExpandedItems(prev => new Set([...prev, item.id]));
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+  }, [pathname, findActiveItemByPath]);
 
   const normalizeText = useCallback((text: string): string => {
     if (!text || typeof text !== "string") return "";

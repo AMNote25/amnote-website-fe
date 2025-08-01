@@ -15,6 +15,7 @@ import {
 import Icon from "../ui/icon";
 import iconData from "@/data/iconData";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // ✅ Level 1 Props
 interface MenuItemLv1Props {
@@ -189,13 +190,24 @@ function MenuItemLv3({
   link,
   ...props
 }: MenuItemLv3Props) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    if (link) {
+      router.push(link);
+    }
+  };
+
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
             variant="ghost"
-            onClick={onClick}
+            onClick={handleClick}
             className={cn(
               "flex items-center w-full px-4.5 py-2 text-sm rounded-lg group transition-colors duration-200 h-auto justify-start",
               isActive
@@ -205,19 +217,17 @@ function MenuItemLv3({
             )}
             {...props}
           >
-            <Link href={link || "admnin"} className="flex items-center w-full">
-              <div
-                className={cn(
-                  "w-2 h-2 rounded-full mr-3 transition-colors duration-200",
-                  isActive ? "bg-am-red" : "bg-gray-300"
-                )}
-              ></div>
-              <div className="flex items-center w-34">
-                <span className="overflow-hidden font-semibold text-ellipsis whitespace-nowrap">
-                  {label}
-                </span>
-              </div>
-            </Link>
+            <div
+              className={cn(
+                "w-2 h-2 rounded-full mr-3 transition-colors duration-200",
+                isActive ? "bg-am-red" : "bg-gray-300"
+              )}
+            ></div>
+            <div className="flex items-center w-34">
+              <span className="overflow-hidden font-semibold text-ellipsis whitespace-nowrap">
+                {label}
+              </span>
+            </div>
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" align="center">

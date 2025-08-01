@@ -34,6 +34,7 @@ import {
   ContextMenuTrigger,
 } from "../ui/context-menu";
 import { ScrollArea } from "../ui/scroll-area";
+import { DataTableColumnHeader } from "./data-table-column-header";
 
 interface RowAction {
   label: string;
@@ -64,12 +65,12 @@ export function DataTable<TData>({
   };
 
   return (
-    <div className={cn("flex w-full flex-col gap-2.5", className)} {...props}>
+    <div className={cn("flex w-full flex-col gap-4", className)} {...props}>
       {children}
 
-      <div className="border rounded-md">
-        <Table className="w-full">
-          <TableHeader>
+      <div className="border rounded-md overflow-auto scrollbar-smooth">
+        <Table className="w-full min-w-max">
+          <TableHeader className="bg-background sticky top-0 z-20">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {/* ✅ Checkbox header */}
@@ -100,71 +101,16 @@ export function DataTable<TData>({
                           : undefined,
                       }}
                     >
-                      <div className="flex items-center gap-2">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-
-                        {header.column.getCanSort() ||
-                        header.column.getCanHide() ? (
-                          <DropdownMenu
-                            open={openDropdown === header.id}
-                            onOpenChange={(open) => {
-                              if (open) handleDropdownOpen(header.id);
-                              else setOpenDropdown(null);
-                            }}
-                          >
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="w-6 h-6 p-0 hover:bg-muted"
-                              >
-                                <ChevronsUpDown className="w-3 h-3" />
-                                <span className="sr-only">Column options</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              {header.column.getCanSort() && (
-                                <>
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      header.column.toggleSorting(false)
-                                    }
-                                  >
-                                    <ChevronUp className="w-4 h-4 mr-2" />
-                                    Sort Ascending
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      header.column.toggleSorting(true)
-                                    }
-                                  >
-                                    <ChevronDown className="w-4 h-4 mr-2" />
-                                    Sort Descending
-                                  </DropdownMenuItem>
-                                  {header.column.getCanHide() && (
-                                    <DropdownMenuSeparator />
-                                  )}
-                                </>
-                              )}
-                              {header.column.getCanHide() && (
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    header.column.toggleVisibility(false)
-                                  }
-                                >
-                                  <EyeOff className="w-4 h-4 mr-2" />
-                                  Hide Column
-                                </DropdownMenuItem>
-                              )}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        ) : null}
-                      </div>
+                      {header.isPlaceholder ? null : (
+                        <DataTableColumnHeader
+                          column={header.column}
+                          title={
+                            typeof header.column.columnDef.header === "string"
+                              ? header.column.columnDef.header
+                              : header.column.id
+                          }
+                        />
+                      )}
                     </TableHead>
                   ))}
               </TableRow>
