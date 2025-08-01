@@ -127,11 +127,12 @@ body {
 }
 
 .custom-scroll:hover::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
+  background: important var(--border) transparent;
 }
 
 .custom-scroll:hover::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.5);
+    background: important var(--border) transparent;
+
 }
 
 .text-am-red {
