@@ -137,7 +137,7 @@ export function DataTableFilterList<TData>({
           column.columnDef.meta?.variant ?? "text",
         ),
         filterId: generateId({ length: 8 }),
-      },
+      } as ExtendedColumnFilter<TData>,
     ]);
   }, [columns, filters, debouncedSetFilters]);
 

@@ -13,12 +13,6 @@ interface FMultipleProps {
   maxSelections?: number | null; // Optional limit on number of selections
 }
 
-interface MultipleOption {
-  value: string;
-  label?: string;
-  description?: string;
-}
-
 function FMultiple({
   accessorKey,
   label,

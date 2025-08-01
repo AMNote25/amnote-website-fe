@@ -12,21 +12,6 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import {
-  ChevronDown,
-  ChevronsUpDown,
-  ChevronUp,
-  EyeOff,
-  Scroll,
-} from "lucide-react";
-import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
@@ -36,10 +21,10 @@ import {
 import { ScrollArea } from "../ui/scroll-area";
 import { DataTableColumnHeader } from "./data-table-column-header";
 
-interface RowAction {
+interface RowAction<T = unknown> {
   label: string;
   icon?: React.ReactNode;
-  onClick: (data: any) => void;
+  onClick: (data: T) => void;
   className?: string;
   separator?: boolean;
 }
@@ -47,7 +32,7 @@ interface RowAction {
 interface DataTableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>;
   actionBar?: React.ReactNode;
-  rowActions?: RowAction[];
+  rowActions?: RowAction<TData>[];
 }
 
 export function DataTable<TData>({

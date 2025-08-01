@@ -7,7 +7,7 @@ import { Table } from "@tanstack/react-table";
 import { AdvancedFilter } from "./types";
 
 interface ToolbarProps {
-  table: Table<any>;
+  table: Table<unknown>;
   globalFilter: string;
   setGlobalFilter: (value: string) => void;
   advancedFilters: AdvancedFilter[];

@@ -5,8 +5,17 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import Logo from "./logo";
 
+interface HeaderMenu {
+  id: string;
+  label: string;
+  iconName?: string;
+  parent?: unknown | null;
+  children?: unknown[] | null;
+  type: string;
+}
+
 interface SidebarLayoutProps {
-  onMenuChange?: (menu: any) => void;
+  onMenuChange?: (menu: HeaderMenu) => void;
 }
 
 export default function NavBar({ onMenuChange }: SidebarLayoutProps) {

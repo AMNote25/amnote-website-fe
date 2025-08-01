@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Bell, Check, Settings } from "lucide-react";
 import Icon from "@/components/ui/icon";
+import iconData from "@/data/iconData";
 import {
   notificationCategories,
   sampleNotifications,
@@ -313,7 +314,7 @@ function NotificationItem({ notification, onClick }: NotificationItemProps) {
           {/* Title with icon */}
           <div className="flex items-center mb-1 space-x-2">
             <Icon
-              name={notificationType.icon as any}
+              name={notificationType.icon as keyof typeof iconData}
               size={16}
               style={{ color: notificationType.color }}
             />

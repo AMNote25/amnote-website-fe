@@ -7,11 +7,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import TableFilterEditor from "./filter";
-import { Table, Column } from "@tanstack/react-table";
-import { AdvancedFilter } from "./types";
+import { Table } from "@tanstack/react-table";
+import { AdvancedFilter, ColumnMeta } from "./types";
 
 interface TableAdvancedFilterSystemProps {
-  table: Table<any>;
+  table: Table<unknown>;
   advancedFilters: AdvancedFilter[];
   setAdvancedFilters: React.Dispatch<React.SetStateAction<AdvancedFilter[]>>;
 }
@@ -30,7 +30,7 @@ export default function TableAdvancedFilterSystem({
 
   const addFilter = () => {
     const firstColumn = filterableColumns[0];
-    const columnMeta = firstColumn?.columnDef.meta as any;
+    const columnMeta = firstColumn?.columnDef.meta as ColumnMeta;
     
     let defaultOperator = "contains";
     if (columnMeta?.variant === "select" || columnMeta?.variant === "multiSelect") {
@@ -62,7 +62,7 @@ export default function TableAdvancedFilterSystem({
         // Auto-set operator based on column type when column changes
         if (updates.column && updates.column !== f.column) {
           const newColumn = filterableColumns.find(c => c.id === updates.column);
-          const columnMeta = newColumn?.columnDef.meta as any;
+          const columnMeta = newColumn?.columnDef.meta as ColumnMeta;
           if (columnMeta?.variant === "select" || columnMeta?.variant === "multiSelect") {
             updatedFilter.operator = "includes";
           } else if (columnMeta?.variant === "date") {
@@ -117,7 +117,7 @@ export default function TableAdvancedFilterSystem({
             
             {advancedFilters.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                Chưa có bộ lọc nào. Hãy nhấn "Thêm bộ lọc" để bắt đầu.
+                Chưa có bộ lọc nào. Hãy nhấn &ldquo;Thêm bộ lọc&rdquo; để bắt đầu.
               </p>
             ) : (
               <div className="space-y-3">

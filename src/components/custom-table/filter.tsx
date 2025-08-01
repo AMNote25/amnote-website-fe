@@ -12,12 +12,12 @@ import {
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableDateFilter } from "@/components/data-table/data-table-date-filter";
 import { Column } from "@tanstack/react-table";
-import { FilterOption, AdvancedFilter } from "./types";
+import { FilterOption, AdvancedFilter, ColumnMeta } from "./types";
 
 interface TableFilterEditorProps {
   filter: AdvancedFilter;
   index: number;
-  columns: Column<any, unknown>[];
+  columns: Column<unknown, unknown>[];
   onUpdate: (filterId: number, updates: Partial<AdvancedFilter>) => void;
   onRemove: (filterId: number) => void;
 }
@@ -30,7 +30,7 @@ export default function TableFilterEditor({
   onRemove 
 }: TableFilterEditorProps) {
   const column = columns.find(c => c.id === filter.column);
-  const columnMeta = column?.columnDef.meta as any;
+  const columnMeta = column?.columnDef.meta as ColumnMeta;
 
   const getOperators = (variant?: string): FilterOption[] => {
     switch (variant) {
