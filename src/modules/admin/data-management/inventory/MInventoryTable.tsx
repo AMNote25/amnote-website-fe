@@ -5,6 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ActionBarItem, RowAction } from "@/components/custom-table/types";
 import { InventoryItem } from "@/api/types/inventory";
 import { deleteInventory } from "@/api/services/service_Inventory";
+import { useState } from "react";
+import MInventoryUpdate from "./MInventoryUpdate";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,27 +30,47 @@ export default function MInventoryTable({
   rowActions,
   onDataChange,
 }: MInventoryTableProps) {
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [updateMode, setUpdateMode] = useState<'view' | 'edit'>('view');
+
+  const handleViewDetails = (item: InventoryItem) => {
+    setSelectedItem(item);
+    setUpdateMode('view');
+    setUpdateDialogOpen(true);
+  };
+
+  const handleEdit = (item: InventoryItem) => {
+    setSelectedItem(item);
+    setUpdateMode('edit');
+    setUpdateDialogOpen(true);
+  };
+
+  const handleUpdateSuccess = () => {
+    onDataChange?.();
+    setUpdateDialogOpen(false);
+    setSelectedItem(null);
+  };
+
   const defaultRowActions: RowAction[] = [
     {
       label: "Xem chi tiết",
       icon: <Eye className="w-4 h-4" />,
       onClick: (item: InventoryItem) => {
-        console.log("Xem chi tiết cho:", item.PRODUCT_CD);
-        alert(`Xem chi tiết cho: ${item.PRODUCT_NM} (${item.PRODUCT_CD})`);
+        handleViewDetails(item);
       },
     },
     {
       label: "Chỉnh sửa",
       icon: <Edit className="w-4 h-4" />,
       onClick: (item: InventoryItem) => {
-        console.log("Chỉnh sửa:", item.PRODUCT_CD);
-        alert(`Chỉnh sửa: ${item.PRODUCT_NM}`);
+        handleEdit(item);
       },
       separator: true,
     },
     {
       label: "Xóa sản phẩm",
-      icon: <Trash2 className="w-4 h-4" />,
+      icon: <Trash2 className="w-4 h-4 text-am-red" />,
       onClick: async (item: InventoryItem) => {
         if (confirm(`Xóa "${item.PRODUCT_NM}"?`)) {
           try {
@@ -63,7 +85,7 @@ export default function MInventoryTable({
           }
         }
       },
-      className: "text-red-600 focus:text-red-600",
+      className: "text-am-red focus:text-red-600",
     },
   ];
 
@@ -312,8 +334,7 @@ export default function MInventoryTable({
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => {
-                  console.log("View Details for:", item.PRODUCT_CD);
-                  alert(`Viewing details for: ${item.PRODUCT_NM} (${item.PRODUCT_CD})`);
+                  handleViewDetails(item);
                 }}
               >
                 <Eye className="w-4 h-4 mr-2" />
@@ -321,8 +342,7 @@ export default function MInventoryTable({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  console.log("Edit item:", item.PRODUCT_CD);
-                  alert(`Edit: ${item.PRODUCT_NM}`);
+                  handleEdit(item);
                 }}
               >
                 <Edit className="w-4 h-4 mr-2" />
@@ -359,11 +379,24 @@ export default function MInventoryTable({
   ];
 
   return (
-    <Table
-      data={data}
-      columns={customColumns || defaultColumns}
-      rowActions={rowActions || defaultRowActions}
-      actionBarItems={actionBarItems || defaultActionBarItems}
-    />
+    <>
+      <Table
+        data={data}
+        columns={customColumns || defaultColumns}
+        rowActions={rowActions || defaultRowActions}
+        actionBarItems={actionBarItems || defaultActionBarItems}
+      />
+      
+      <MInventoryUpdate
+        item={selectedItem}
+        isOpen={updateDialogOpen}
+        onClose={() => {
+          setUpdateDialogOpen(false);
+          setSelectedItem(null);
+        }}
+        onSuccess={handleUpdateSuccess}
+        mode={updateMode}
+      />
+    </>
   );
 }

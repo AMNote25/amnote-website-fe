@@ -22,7 +22,7 @@ export default function NavBar({ onMenuChange }: SidebarLayoutProps) {
   }, []);
 
   return (
-    <div className="text-card-foreground border shadow-sm flex flex-col items-start w-full h-full p-6 gap-6 bg-sidebar max-w-2xs rounded-2xl">
+    <div className="text-card-foreground border shadow-sm flex flex-col items-start w-full h-full p-6 gap-4 bg-sidebar max-w-2xs rounded-2xl">
       <div className="w-full flex items-center justify-between">
         <Logo className="w-full h-30" />
       </div>

@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Archive, Plus, X } from "lucide-react";
+import { Archive, CheckCircle, Plus, TriangleAlert, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import FInput from "@/components/adaptive-form/form-input";
 import FSwitch from "@/components/adaptive-form/form-switch";
@@ -18,40 +18,7 @@ import FTextarea from "@/components/adaptive-form/form-textarea";
 import { insertInventory } from "@/api/services/service_Inventory";
 import { toast } from "sonner";
 import type { InventoryPayload } from "@/api/types/inventoryPayload";
-
-// Field config
-const INVENTORY_INSERT_FIELDS: {
-  key: keyof InventoryPayload;
-  label: string;
-  type: "string" | "number" | "boolean";
-}[] = [
-  { key: "PRODUCT_CD", label: "Mã sản phẩm", type: "string" },
-  { key: "DivisionCD", label: "Mã phân loại", type: "string" },
-  { key: "PRODUCTKIND_CD", label: "Mã loại sản phẩm", type: "string" },
-  { key: "DepartmentCD", label: "Mã phòng ban", type: "string" },
-  { key: "PRODUCT_NM", label: "Tên sản phẩm", type: "string" },
-  { key: "PRODUCT_NM_ENG", label: "Tên sản phẩm (EN)", type: "string" },
-  { key: "PRODUCT_NM_KOR", label: "Tên sản phẩm (KR)", type: "string" },
-  { key: "InboundUnitCD", label: "Đơn vị nhập kho", type: "string" },
-  { key: "OutboundUnitCD", label: "Đơn vị xuất kho", type: "string" },
-  { key: "materialInputUnitCD", label: "Đơn vị nhập nguyên liệu", type: "string" },
-  { key: "StockUnitCD", label: "Đơn vị tồn kho", type: "string" },
-  { key: "InboundQuantity", label: "Số lượng nhập kho", type: "number" },
-  { key: "OutboundQuantity", label: "Số lượng xuất kho", type: "number" },
-  { key: "MaterialInputQuantity", label: "Số lượng nhập nguyên liệu", type: "number" },
-  { key: "StoreCD", label: "Kho hàng", type: "string" },
-  { key: "StandardCD", label: "Tiêu chuẩn sản phẩm", type: "string" },
-  { key: "FitnessStock", label: "Tồn kho an toàn", type: "number" },
-  { key: "UnitPrice", label: "Giá đơn vị (CC)", type: "number" },
-  { key: "FcUnitPirce", label: "Giá đơn vị (FC)", type: "number" },
-  { key: "ExRate", label: "Tỷ giá hối đoái", type: "number" },
-  { key: "lblCCType", label: "Loại CC", type: "string" },
-  { key: "lblFCType", label: "Loại FC", type: "string" },
-  { key: "txtSummary", label: "Tóm tắt sản phẩm", type: "string" },
-  { key: "rgUseNotUse", label: "Trạng thái sử dụng", type: "boolean" },
-  { key: "HaveChildBOM", label: "Có BOM con", type: "boolean" },
-  { key: "Origin", label: "Nguồn gốc", type: "string" },
-];
+import { INVENTORY_FIELDS } from "@/constants/CInventory";
 
 export default function MInventoryInsert() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,10 +30,16 @@ export default function MInventoryInsert() {
     HaveChildBOM: "Y",
   });
 
-  const totalFields = INVENTORY_INSERT_FIELDS.length;
-  const estimatedHeight = Math.min(totalFields * 80 + 200, window.innerHeight * 0.8);
+  const totalFields = INVENTORY_FIELDS.length;
+  const estimatedHeight = Math.min(
+    totalFields * 80 + 200,
+    window.innerHeight * 0.8
+  );
 
-  const handleInputChange = (key: keyof InventoryPayload, value: string | number | boolean) => {
+  const handleInputChange = (
+    key: keyof InventoryPayload,
+    value: string | number | boolean
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value,
@@ -76,6 +49,12 @@ export default function MInventoryInsert() {
   const validatePayload = (): string | null => {
     if (!formData.PRODUCT_CD) return "Mã sản phẩm không được để trống";
     if (!formData.PRODUCT_NM) return "Tên sản phẩm không được để trống";
+    if (!formData.DivisionCD) return "Mã phân loại không được để trống";
+    if (!formData.PRODUCTKIND_CD) return "Mã loại sản phẩm không được để trống";
+    if (!formData.DepartmentCD) return "Mã phòng ban không được để trống";
+    if (!formData.StockUnitCD) return "Đơn vị tồn kho không được để trống";
+    if (!formData.StoreCD) return "Kho hàng không được để trống";
+    if (!formData.UnitPrice) return "Giá đơn vị (CC) không được để trống";
     return null;
   };
 
@@ -116,11 +95,17 @@ export default function MInventoryInsert() {
         rgUseNotUse: "1",
         HaveChildBOM: "Y",
         Origin: formData.Origin || "",
+        Lag: formData.Lag || "", // Optional field
       };
 
       const result = await insertInventory(payload);
       if (result.status === "success") {
-        toast.success("Thêm sản phẩm thành công!");
+        toast.success("Thêm sản phẩm thành công!", {
+          icon: <CheckCircle className="text-green-500" />,
+          style: {
+            gap: "1rem",
+          },
+        });
         handleCancel();
       } else {
         const errorMsg = Array.isArray(result?.messages)
@@ -129,7 +114,12 @@ export default function MInventoryInsert() {
         toast.error(errorMsg);
       }
     } catch (err: any) {
-      toast.error(err?.message || "Có lỗi xảy ra khi thêm sản phẩm");
+      toast.error(err?.message || "Có lỗi xảy ra khi thêm sản phẩm", {
+        icon: <TriangleAlert className="text-red-500" />,
+        style: {
+          gap: "1rem",
+        },
+      });
     } finally {
       setIsLoading(false);
     }
@@ -143,61 +133,75 @@ export default function MInventoryInsert() {
     });
   };
 
-  const renderField = (field: typeof INVENTORY_INSERT_FIELDS[number]) => {
+  const renderField = (field: (typeof INVENTORY_FIELDS)[number]) => {
     const value = formData[field.key];
+    const colSpan = field.colspan || 1;
+    const gridColClass = colSpan === 2 ? "col-span-2" : "col-span-1";
+
     switch (field.type) {
       case "boolean":
         return (
-          <FSwitch
-            key={field.key}
-            accessorKey={field.key}
-            label={field.label}
-            value={value === "Y"}
-            onChange={(key, val) =>
-              handleInputChange(key as keyof InventoryPayload, val ? "Y" : "N")
-            }
-          />
+          <div key={field.key} className={gridColClass}>
+            <FSwitch
+              accessorKey={field.key}
+              label={field.label}
+              value={value === "Y"}
+              onChange={(key, val) =>
+                handleInputChange(
+                  key as keyof InventoryPayload,
+                  val ? "Y" : "N"
+                )
+              }
+              variant={field.required ? "compulsory" : "optional"}
+            />
+          </div>
         );
       case "number":
         return (
-          <FInput
-            key={field.key}
-            accessorKey={field.key}
-            label={field.label}
-            value={Number(value) || 0}
-            onChange={(key, val) =>
-              handleInputChange(key as keyof InventoryPayload, Number(val))
-            }
-            placeholder={`Nhập ${field.label}`}
-          />
+          <div key={field.key} className={gridColClass}>
+            <FInput
+              accessorKey={field.key}
+              label={field.label}
+              value={Number(value) || 0}
+              onChange={(key, val) =>
+                handleInputChange(key as keyof InventoryPayload, Number(val))
+              }
+              placeholder={`Nhập ${field.label}`}
+              variant={field.required ? "compulsory" : "optional"}
+            />
+          </div>
         );
       default:
         if (field.key === "txtSummary") {
           return (
-            <FTextarea
-              key={field.key}
+            <div key={field.key} className={gridColClass}>
+              <FTextarea
+                accessorKey={field.key}
+                label={field.label}
+                value={String(value || "")}
+                onChange={(key, val) =>
+                  handleInputChange(key as keyof InventoryPayload, val)
+                }
+                rows={3}
+                placeholder={`Nhập ${field.label}`}
+                variant={field.required ? "compulsory" : "optional"}
+              />
+            </div>
+          );
+        }
+        return (
+          <div key={field.key} className={gridColClass}>
+            <FInput
               accessorKey={field.key}
               label={field.label}
               value={String(value || "")}
               onChange={(key, val) =>
                 handleInputChange(key as keyof InventoryPayload, val)
               }
-              rows={3}
               placeholder={`Nhập ${field.label}`}
+              variant={field.required ? "compulsory" : "optional"}
             />
-          );
-        }
-        return (
-          <FInput
-            key={field.key}
-            accessorKey={field.key}
-            label={field.label}
-            value={String(value || "")}
-            onChange={(key, val) =>
-              handleInputChange(key as keyof InventoryPayload, val)
-            }
-            placeholder={`Nhập ${field.label}`}
-          />
+          </div>
         );
     }
   };
@@ -222,9 +226,12 @@ export default function MInventoryInsert() {
         </DialogHeader>
 
         <div className="bg-background-primary overflow-hidden">
-          <ScrollArea style={{ height: `${estimatedHeight}px` }} className="max-h-[70vh]">
-            <div className="space-y-4">
-              {INVENTORY_INSERT_FIELDS.map((field) => renderField(field))}
+          <ScrollArea
+            style={{ height: `${estimatedHeight}px` }}
+            className="max-h-[70vh]"
+          >
+            <div className="grid grid-cols-2 gap-4">
+              {INVENTORY_FIELDS.map((field) => renderField(field))}
             </div>
           </ScrollArea>
         </div>
